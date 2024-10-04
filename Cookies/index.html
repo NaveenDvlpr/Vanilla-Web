@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookies</title>
+    <script type="text/javascript">
+        const createCookie = (fieldName, fieldValue, expiry) => {
+            const date = new Date();
+            date.setTime(date.getTime(), (expiry*24*60*60*1000));
+            const expires = "expires="+date.toGMTString();
+            const cook = fieldName+"="+fieldValue+";"+expires+";path=/";
+            document.cookie = cook; 
+        }
+
+        const readCookie = (cname) => {
+
+            const name = cname + "=";
+            const decoded_cookie = decodeURIComponent(document.cookie);
+            const carr = decoded_cookie.split(';');
+
+            for(let i = 0; i < carr.length; i++) {
+
+                let c = carr[i];
+                while(c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if(c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+
+            }
+
+            return "";
+
+        }
+
+        const runApp = () => {
+
+            let user = readCookie("username");
+            if(user != "") {
+                alert("Hello "+user);
+            } else {
+                user = prompt("Enter your name: ", "");
+                console.log('User: ', user);
+                if(user != "" && user != null) {
+                    createCookie("username", user, 30);
+                }
+            }
+
+        }
+
+
+
+
+    </script>
+</head>
+<body onload="runApp()"></body>
+</html>
